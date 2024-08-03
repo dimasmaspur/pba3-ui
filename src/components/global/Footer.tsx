@@ -1,12 +1,16 @@
+import { useRouter } from "next/router"
+
 export const Footer: React.FC = () => {
+    const router = useRouter()
+
     return (
         <div className="md:pt-24 px-6 md:px-4">
             <footer className="footer footer-center bg-base-200 text-base-content rounded p-10">
                 <nav className="md:grid md:grid-flow-col gap-4">
-                    <a className="link link-hover">About us</a>
-                    <a className="link link-hover">Contact</a>
-                    <a className="link link-hover">Features</a>
-                    <a className="link link-hover">Reservation</a>
+                    <a className="link link-hover" onClick={() => router.push('/#about')}>About us</a>
+                    <a className="link link-hover" onClick={() => router.push('/#gallery')}>Gallery</a>
+                    <a className="link link-hover" onClick={() => router.push('/reservation')}>Reservation</a>
+                    <a className="link link-hover" onClick={() => router.push('/#contact-us')}>Contact Us</a>
                 </nav>
                 <nav>
                     <div className="grid grid-flow-col gap-4">
