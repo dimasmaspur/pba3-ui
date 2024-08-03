@@ -1,60 +1,13 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router"
-import { ethers, BrowserProvider } from 'ethers';
+import { useWeb3 } from "@/context/web3Context";
+import { useRouter } from "next/router";
 
-declare global {
-    interface Window {
-        ethereum?: any;
-    }
-}
 export const Navbar: React.FC = () => {
     const router = useRouter()
-    const [account, setAccount] = useState<string | null>(null);
-
-    const connectWallet = async () => {
-        if (typeof window !== 'undefined' && window.ethereum) {
-            try {
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
-                const provider = new BrowserProvider(window.ethereum);
-                const signer = await provider.getSigner();
-                const address = await signer.getAddress();
-                setAccount(address);
-            } catch (error) {
-                console.error('Failed to connect wallet:', error);
-            }
-        } else {
-            console.log('Please install MetaMask');
-        }
-    }
+    const { account, connectWallet, logout } = useWeb3();
 
     const truncateAddress = (address: string): string => {
         return `${address.slice(0, 4)}......${address.slice(-4)}`;
-    }
-
-    const logout = () => {
-        setAccount(null);
-    }
-
-    useEffect(() => {
-        if (typeof window !== 'undefined' && window.ethereum) {
-            window.ethereum.request({ method: 'eth_accounts' })
-              .then((accounts: string[]) => {
-                if (accounts.length > 0) {
-                  setAccount(accounts[0]);
-                }
-              })
-              .catch((err: Error) => console.error(err));
-      
-            // Listen for account changes
-            window.ethereum.on('accountsChanged', (accounts: string[]) => {
-              if (accounts.length > 0) {
-                setAccount(accounts[0]);
-              } else {
-                setAccount(null);
-              }
-            });
-          }
-    }, []);
+    };
 
     return (
         <div className="navbar bg-base-100 shadow-none">
