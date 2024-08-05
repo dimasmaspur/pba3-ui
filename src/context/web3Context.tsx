@@ -11,6 +11,7 @@ declare global {
 
 interface Web3ContextType {
   account: string | null;
+  provider:ethers.BrowserProvider | null;
   connectWallet: () => Promise<void>;
   logout: () => void;
 }
@@ -19,6 +20,7 @@ const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
 export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [account, setAccount] = useState<string | null>(null);
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
 
   const connectWallet = async () => {
     if (typeof window !== 'undefined' && window.ethereum) {
@@ -28,6 +30,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
         setAccount(address);
+        setProvider(provider)
       } catch (error) {
         console.error('Failed to connect wallet:', error);
       }
@@ -69,7 +72,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   return (
-    <Web3Context.Provider value={{ account, connectWallet, logout }}>
+    <Web3Context.Provider value={{ account, provider, connectWallet, logout }}>
       {children}
     </Web3Context.Provider>
   );

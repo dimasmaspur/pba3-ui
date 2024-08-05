@@ -1,5 +1,7 @@
 import { useWeb3 } from "@/context/web3Context";
 import { useRouter } from "next/router";
+import { ethers } from 'ethers';
+
 
 export const Navbar: React.FC = () => {
     const router = useRouter()
@@ -8,7 +10,7 @@ export const Navbar: React.FC = () => {
     const truncateAddress = (address: string): string => {
         return `${address.slice(0, 4)}......${address.slice(-4)}`;
     };
-
+    
     return (
         <div className="navbar bg-base-100 shadow-none">
             <div className="navbar-start">
