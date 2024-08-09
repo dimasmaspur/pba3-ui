@@ -9,9 +9,21 @@ declare global {
   }
 }
 
+interface RentStatus {
+  address:string;
+  dayRent:string;
+  startTime:string;
+  endTime:string;
+  purposeStartDate:string;
+  purposeEndDate:string;
+  purposeNight:number;
+}
+
 interface Web3ContextType {
   account: string | null;
   provider:ethers.BrowserProvider | null;
+  status:RentStatus;
+  setStatus:React.Dispatch<React.SetStateAction<RentStatus>>;
   connectWallet: () => Promise<void>;
   logout: () => void;
 }
@@ -21,6 +33,7 @@ const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [account, setAccount] = useState<string | null>(null);
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
+  const [status, setStatus] = useState<RentStatus>({address:"",dayRent:"",startTime:"",endTime:"",purposeStartDate:"",purposeEndDate:"",  purposeNight:0});
 
   const connectWallet = async () => {
     if (typeof window !== 'undefined' && window.ethereum) {
@@ -72,7 +85,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   return (
-    <Web3Context.Provider value={{ account, provider, connectWallet, logout }}>
+    <Web3Context.Provider value={{ account, provider, connectWallet, logout, status, setStatus }}>
       {children}
     </Web3Context.Provider>
   );
