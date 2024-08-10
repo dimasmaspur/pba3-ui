@@ -9,20 +9,20 @@ export const Specification: React.FC<{ withCta: boolean }> = ({ withCta }) => {
                 <div className="flex w-full items-end gap-4 pt-4 flex-wrap md:flex-nowrap">
                     <div className="flex  gap-4 justify-between w-full flex-wrap md:flex-nowrap">
                         <div className="flex flex-col gap-1 md:w-1/4">
-                            <span>Name</span>
-                            <div className="badge badge-outline p-4 font-bold w-full">Vila PBA3</div>
+                            <span>Villa Name</span>
+                            <div className="badge badge-outline p-4 font-bold w-full">Pelita Bangsa 3 Villa</div>
                         </div>
                         <div className="flex flex-col gap-1 md:w-1/4">
-                            <span className="text-end md:text-start">City</span>
-                            <div className="badge badge-outline p-4 font-bold w-full">Jakarta Raya</div>
+                            <span className="text-end md:text-start">City or Region</span>
+                            <div className="badge badge-outline p-4 font-bold w-full">Canggu, Bali</div>
                         </div>
                         <div className="flex flex-col gap-1 md:w-1/4">
                             <span >Capacity</span>
-                            <div className="badge badge-outline p-4 font-bold w-full">4 Bed, 4 Bath</div>
+                            <div className="badge badge-outline p-4 font-bold w-full">4 Bed, 4 Bathroom</div>
                         </div>
                         <div className="flex flex-col gap-1 md:w-1/4">
                             <span className="text-end md:text-start">Price / Night</span>
-                            <div className="badge badge-outline p-4 font-bold w-full">0.001 LISK</div>
+                            <div className="badge badge-outline p-4 font-bold w-full">0.001 ETH</div>
                         </div>
                     </div>
                     {
