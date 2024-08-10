@@ -110,9 +110,9 @@ export const Availability: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex items-center justify-end w-full md:w-auto">
-                    <span className="text-end md:text-start">Total Payment:</span>
+                    <span className="text-end md:text-start mr-3">Total Payment:</span>
                         {totalPayment && (
-                            <div className="badge font-bold ml-2 mt-2 md:mt-0">
+                            <div className="badge font-bold">
                                 {totalPayment} ETH
                             </div>
                         )}
