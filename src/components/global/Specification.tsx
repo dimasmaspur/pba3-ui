@@ -29,7 +29,7 @@ export const Specification: React.FC<{ withCta: boolean }> = ({ withCta }) => {
                             <div className="badge badge-outline p-4 font-bold w-full">4 Bed, 4 Bathroom</div>
                         </div>
                         <div className="flex flex-col gap-1 md:w-1/4">
-                            <span className="text-end md:text-start">Price / Night</span>
+                            <span className="text-end md:text-start">Price/Night</span>
                             <div className="badge badge-outline p-4 font-bold w-full">0.001 ETH</div>
                         </div>
                     </div>

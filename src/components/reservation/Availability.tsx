@@ -13,6 +13,7 @@ export const Availability: React.FC = () => {
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
     const [rentalPeriodMessage, setRentalPeriodMessage] = useState<string | null>(null);
+    const [vltTokenMessage, setVltTokenMessage] = useState<string | null>(null);
     const [confirmationStatus, setConfirmationStatus] = useState<'success' | 'error' | null>(null);
     const [totalPayment, setTotalPayment] = useState<string | null>(null);
 
@@ -39,11 +40,15 @@ export const Availability: React.FC = () => {
     const handleRentVilla = async () => {
         if (!provider) {
             console.error('Provider is not available');
+            setConfirmationMessage('Provider is not available');
+            setConfirmationStatus('error');
             return;
         }
 
         if (!startDate || !endDate) {
             console.error('Start date or end date is not selected');
+            setConfirmationMessage('Start date or end date is not selected');
+            setConfirmationStatus('error');
             return;
         }
 
@@ -51,6 +56,8 @@ export const Availability: React.FC = () => {
         
         if (rentalDays <= 0) {
             console.error('Rental duration must be greater than zero');
+            setConfirmationMessage('Rental duration must be greater than zero');
+            setConfirmationStatus('error');
             return;
         }
 
@@ -66,13 +73,15 @@ export const Availability: React.FC = () => {
             // Wait for the transaction to be confirmed
             await tx.wait();
             console.log('Transaction confirmed');
-            setConfirmationMessage('Transaction confirmed');
-            setRentalPeriodMessage(`Rent Period: ${rentalDays} Days`);
+            setRentalPeriodMessage(`Rental Period: ${rentalDays} Days`);            
+            setVltTokenMessage(`${rentalDays} VLT Successfully Sent to your Wallet`);
+            setConfirmationMessage('Transaction Confirmed');
             setConfirmationStatus('success');
         } catch (error) {
             console.error('Error renting villa:', error);
             setConfirmationMessage('Error renting villa. Please try again.');
             setRentalPeriodMessage(null);
+            setVltTokenMessage(null);
             setConfirmationStatus('error');
         }
         
@@ -119,7 +128,7 @@ export const Availability: React.FC = () => {
                                 {totalPayment} ETH
                             </div>
                         )}
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={handleRentVilla}>Confirm Rent Villa</button>
+                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-green-600" onClick={handleRentVilla}>Confirm Rent Villa</button>
                         
                     </div>
                 </div>
@@ -132,6 +141,11 @@ export const Availability: React.FC = () => {
                     {rentalPeriodMessage && (
                         <div className="mt-2">
                             {rentalPeriodMessage}
+                        </div>
+                    )}
+                    {vltTokenMessage && (
+                        <div className="mt-2">
+                            {vltTokenMessage}
                         </div>
                     )}
                 </div>
