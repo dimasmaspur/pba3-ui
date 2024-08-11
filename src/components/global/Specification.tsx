@@ -1,4 +1,12 @@
+import { useRouter } from 'next/router';
+
 export const Specification: React.FC<{ withCta: boolean }> = ({ withCta }) => {
+    const router = useRouter();
+
+    const handleButtonClick = () => {
+        router.push('/reservation'); // Navigate to the Availability page
+    };
+
     return (
         <div className="md:flex pt-10 gap-4 text-black">
             <div className="">
@@ -17,7 +25,7 @@ export const Specification: React.FC<{ withCta: boolean }> = ({ withCta }) => {
                             <div className="badge badge-outline p-4 font-bold w-full">Canggu, Bali</div>
                         </div>
                         <div className="flex flex-col gap-1 md:w-1/4">
-                            <span >Capacity</span>
+                            <span>Capacity</span>
                             <div className="badge badge-outline p-4 font-bold w-full">4 Bed, 4 Bathroom</div>
                         </div>
                         <div className="flex flex-col gap-1 md:w-1/4">
@@ -25,13 +33,16 @@ export const Specification: React.FC<{ withCta: boolean }> = ({ withCta }) => {
                             <div className="badge badge-outline p-4 font-bold w-full">0.001 ETH</div>
                         </div>
                     </div>
-                    {
-                        withCta && (
-                            <button className="btn btn-neutral font-bold btn-sm">Rent Now</button>
-                        )
-                    }
+                    {withCta && (
+                        <button
+                            className="btn btn-primary font-bold btn-sm"
+                            onClick={handleButtonClick}
+                        >
+                            Look More Details
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
