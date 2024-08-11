@@ -12,6 +12,7 @@ export const Availability: React.FC = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
+    const [rentalPeriodMessage, setRentalPeriodMessage] = useState<string | null>(null);
     const [confirmationStatus, setConfirmationStatus] = useState<'success' | 'error' | null>(null);
     const [totalPayment, setTotalPayment] = useState<string | null>(null);
 
@@ -66,10 +67,12 @@ export const Availability: React.FC = () => {
             await tx.wait();
             console.log('Transaction confirmed');
             setConfirmationMessage('Transaction confirmed');
+            setRentalPeriodMessage(`Rent Period: ${rentalDays} Days`);
             setConfirmationStatus('success');
         } catch (error) {
             console.error('Error renting villa:', error);
             setConfirmationMessage('Error renting villa. Please try again.');
+            setRentalPeriodMessage(null);
             setConfirmationStatus('error');
         }
         
@@ -126,13 +129,13 @@ export const Availability: React.FC = () => {
                     className={`mt-4 text-center p-2 rounded ${confirmationStatus === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
                 >
                     {confirmationMessage}
+                    {rentalPeriodMessage && (
+                        <div className="mt-2">
+                            {rentalPeriodMessage}
+                        </div>
+                    )}
                 </div>
             )}
         </div>
     );
-    };
-
-    /* <button className="btn btn-primary bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={handleRentVilla}>Confirm Rent Villa</button> */
-    
-  
-    
+};

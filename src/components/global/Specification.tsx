@@ -35,10 +35,10 @@ export const Specification: React.FC<{ withCta: boolean }> = ({ withCta }) => {
                     </div>
                     {withCta && (
                         <button
-                            className="btn btn-primary font-bold btn-sm"
+                            className="btn btn-primary bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-500"
                             onClick={handleButtonClick}
                         >
-                            Look More Details
+                            Book Now
                         </button>
                     )}
                 </div>
