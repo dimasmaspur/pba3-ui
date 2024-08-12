@@ -16,7 +16,7 @@ export const Availability: React.FC = () => {
     const [vltTokenMessage, setVltTokenMessage] = useState<string | null>(null);
     const [confirmationStatus, setConfirmationStatus] = useState<'success' | 'error' | null>(null);
     const [totalPayment, setTotalPayment] = useState<string | null>(null);
-
+    const [loading, setLoading] = useState<boolean>(false)
     const villaPricePerDay = ethers.parseEther("0.001"); // Price per day in ETH
 
     const calculateTotalPayment = () => {
@@ -53,7 +53,7 @@ export const Availability: React.FC = () => {
         }
 
         const rentalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-        
+
         if (rentalDays <= 0) {
             console.error('Rental duration must be greater than zero');
             setConfirmationMessage('Rental duration must be greater than zero');
@@ -62,8 +62,14 @@ export const Availability: React.FC = () => {
         }
 
         try {
-            const signer = new ethers.Wallet("59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d", provider); // Replace with your private key
+            setLoading(true)
+            // Get signer
+            const signer = await provider.getSigner();
+            console.log("signer: ",signer)
+            // Create contract instance
             const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
+
+            // const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
 
             const totalPaymentInEther = villaPricePerDay * BigInt(rentalDays);
 
@@ -73,22 +79,24 @@ export const Availability: React.FC = () => {
             // Wait for the transaction to be confirmed
             await tx.wait();
             console.log('Transaction confirmed');
-            setRentalPeriodMessage(`Rental Period: ${rentalDays} Days`);            
+            setRentalPeriodMessage(`Rental Period: ${rentalDays} Days`);
             setVltTokenMessage(`You've Earned ${rentalDays} VLT to your Wallet`);
             setConfirmationMessage('Transaction Confirmed');
             setConfirmationStatus('success');
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             console.error('Error renting villa:', error);
             setConfirmationMessage('Error renting villa. Please try again.');
             setRentalPeriodMessage(null);
             setVltTokenMessage(null);
             setConfirmationStatus('error');
         }
-        
+
     };
     return (
         <div className="px-6 md:px-4 pt-4 md:pt-10">
-            
+
 
             {/* Date Selection and Confirmation */}
             <div className="w-full text-black">
@@ -130,16 +138,22 @@ export const Availability: React.FC = () => {
                                 {totalPayment} ETH
                             </div>
                         )}
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-green-600" onClick={handleRentVilla}>
-                            Confirm Rent Villa
-                        </button>
+                        {
+                            loading ? (
+                                <span className="loading loading-bars loading-lg"></span>
+                            ) : (
+                                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-green-600" onClick={handleRentVilla}>
+                                    Confirm Rent Villa
+                                </button>
+                            )
+                        }
                     </div>
                 </div>
             </div>
 
             {/* Confirmation Message */}
             {confirmationMessage && (
-                <div 
+                <div
                     className={`mt-4 text-center p-2 rounded ${confirmationStatus === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
                 >
                     {confirmationMessage}
