@@ -42,7 +42,7 @@ export const Rewards: React.FC = () => {
 
     return (
         <div className="pt-24 px-6 md:px-4 text-black">
-            <h1 className="text-3xl font-bold" id="rewards">Let's Rent with us to earn more rewards</h1>
+            <h1 className="text-3xl font-bold" id="rewards">Let&lsquo;s Rent with us to earn more rewards</h1>
             <p className="mt-4 text-2xl">Your Current Level: {rewardLevel}</p>
             {/* Basic Reward Tier */}
             <div className="flex flex-col md:flex-row gap-4 pt-8">
