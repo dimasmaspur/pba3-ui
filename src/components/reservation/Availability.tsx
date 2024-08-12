@@ -74,7 +74,7 @@ export const Availability: React.FC = () => {
             await tx.wait();
             console.log('Transaction confirmed');
             setRentalPeriodMessage(`Rental Period: ${rentalDays} Days`);            
-            setVltTokenMessage(`${rentalDays} VLT Successfully Sent to your Wallet`);
+            setVltTokenMessage(`You've Earned ${rentalDays} VLT to your Wallet`);
             setConfirmationMessage('Transaction Confirmed');
             setConfirmationStatus('success');
         } catch (error) {
@@ -86,15 +86,17 @@ export const Availability: React.FC = () => {
         }
         
     };
-
     return (
         <div className="px-6 md:px-4 pt-4 md:pt-10">
+            
+
+            {/* Date Selection and Confirmation */}
             <div className="w-full text-black">
-                <h1 className="text-5xl md:text-6xl font-bold mb-4">select rental date here</h1>
+                <h1 className="text-5xl md:text-6xl font-bold mb-4">Select Rental Date Here</h1>
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex flex-col md:flex-row items-center gap-4">
                         <div className="form-group flex flex-col gap-2 w-full md:w-auto">
-                            <label className="badge badge-primary font-bold">select start date</label>
+                            <label className="badge badge-primary font-bold">Select Start Date</label>
                             <DatePicker
                                 selected={startDate ?? undefined}
                                 onChange={(date) => setStartDate(date as Date)}
@@ -107,7 +109,7 @@ export const Availability: React.FC = () => {
                             />
                         </div>
                         <div className="form-group flex flex-col gap-2 w-full md:w-auto">
-                            <label className="badge badge-primary font-bold">select end date</label>
+                            <label className="badge badge-primary font-bold">Select End Date</label>
                             <DatePicker
                                 selected={endDate ?? undefined}
                                 onChange={(date) => setEndDate(date as Date)}
@@ -122,17 +124,20 @@ export const Availability: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex items-center justify-end w-full md:w-auto">
-                    <span className="text-end md:text-start mr-3">Total Payment:</span>
+                        <span className="text-end md:text-start mr-3">Total Payment:</span>
                         {totalPayment && (
                             <div className="badge font-bold">
                                 {totalPayment} ETH
                             </div>
                         )}
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-green-600" onClick={handleRentVilla}>Confirm Rent Villa</button>
-                        
+                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-green-600" onClick={handleRentVilla}>
+                            Confirm Rent Villa
+                        </button>
                     </div>
                 </div>
             </div>
+
+            {/* Confirmation Message */}
             {confirmationMessage && (
                 <div 
                     className={`mt-4 text-center p-2 rounded ${confirmationStatus === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}

@@ -1,9 +1,49 @@
+import { useWeb3 } from '@/context/web3Context';
+import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import contractABI from '../../../vilaABI.json';
+import { CONTRACT_ADDRESS } from '@/constant';
+
+
 export const Rewards: React.FC = () => {
+    const { provider, status } = useWeb3();
+    const [vltBalance, setVltBalance] = useState<number | null>(null);
+    const [rewardLevel, setRewardLevel] = useState<string>('');
+
+    useEffect(() => {
+        const fetchVltBalance = async () => {
+            if (provider) {
+                const signer = await provider.getSigner(); // Await the signer promise
+                const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
+                const address = await signer.getAddress(); // Await the address promise
+                const balance = await contract.balanceOf(address);
+                setVltBalance(parseInt(ethers.formatUnits(balance, 18)));
+            }
+        };
+
+        fetchVltBalance();
+    }, [provider]);
+
+    useEffect(() => {
+        if (vltBalance !== null) {
+            if (vltBalance >= 0 && vltBalance < 5) {
+                setRewardLevel('(Not Enough VLT Tokens to Earn Rewards)');
+            } else if (vltBalance > 4 && vltBalance <= 30) {
+                setRewardLevel('Basic');
+            }else if (vltBalance > 30 && vltBalance <= 90) {
+                setRewardLevel('Silver');
+            } else if (vltBalance > 90 && vltBalance <= 150) {
+                setRewardLevel('Gold');
+            } else if (vltBalance > 150) {
+                setRewardLevel('Platinum');
+            }
+        }
+    }, [vltBalance]);
 
     return (
         <div className="pt-24 px-6 md:px-4 text-black">
-            <h1 className="text-3xl font-bold" id="rewards">Let's Rent with us to get more rewards</h1>
-            
+            <h1 className="text-3xl font-bold" id="rewards">Let's Rent with us to earn more rewards</h1>
+            <p className="mt-4 text-2xl">Your Current Level: {rewardLevel}</p>
             {/* Basic Reward Tier */}
             <div className="flex flex-col md:flex-row gap-4 pt-8">
                 <img src={'/img/reward1.png'} alt="Basic Reward" className="rounded-xl w-50 h-20 object-cover ml-4" />
@@ -59,7 +99,7 @@ export const Rewards: React.FC = () => {
             <div className="flex flex-col md:flex-row gap-4 pt-8">
                 <div className="rounded-xl w-50 h-20 object-cover ml-4" />
                 <div>
-                    <p style={{ fontSize: "2vw" }} className="text-3xl font-bold" id="rewards">Cumulative Rewards</p>
+                    <p style={{ fontSize: "2vw" }} className="text-3xl font-bold" id="rewards">*Cumulative Rewards</p>
                     <ul className="list-disc ml-6">
                         <li className="text-lg">Collect 100 VLT tokens over a year to receive a Free Weekend Stay</li>
                         <li className="text-lg">Earn bonus VLT tokens for every 10 consecutive days of rentals</li>
